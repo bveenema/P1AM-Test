@@ -1,0 +1,4 @@
+[submodule "lib/Tags"]
+	path = lib/Tags
+	url = https://github.com/bveenema/Tags.git
+	branch = main
