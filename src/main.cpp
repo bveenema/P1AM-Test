@@ -1,31 +1,30 @@
 #include <Arduino.h>
 #include <Tags.h>
-
-Tag::Description<int> TagDescription;
+#include <avr/dtostrf.h>
 
 TagInt myTag;
-TagBase<float> floatTag;
+TagFloat floatTag;
 
 template<typename T>
 void HandleOnChange(TagBase<T> &tag, const T current, const T previous, const Tag::Type type)
 {
-    char buffer[255];
-    if(type == Tag::Type::Int)
-        snprintf(buffer, sizeof(buffer), "Update %s, New Value: %li, Old Value: %li, Type: %d", tag.Name, current, previous, type);
-    else
-        char currentBuffer[16];
-        char previousBuffer[16];
-        dtostrf(current, 8, 4, currentBuffer);
-        dtostrf(previous, 8, 4, previousBuffer);
-        snprintf(buffer, sizeof(buffer), "Updated Tag: %s, New Value: %s, Old Value: %s, Type: %d", tag.Name, currentBuffer, previousBuffer, type);
-    Serial.println(buffer);
-    Serial.println(current);
+    char stringBuffer[255];
+    char currentBuffer[21];
+    char previousBuffer[21];
+    
+    dtostrf(current, 1, (type == Tag::Type::Float) ? 6 : 0, currentBuffer);
+    dtostrf(previous,1, (type == Tag::Type::Float) ? 6 : 0, previousBuffer);
+    
+    snprintf(stringBuffer, sizeof(stringBuffer), "Update %s, New Value: %s, Old Value: %s, Type: %d, Index: %d", tag.Name, currentBuffer, previousBuffer, type, tag.GetIndex());
+    
+    Serial.println(stringBuffer);
 }
 
 void setup() {
     Serial.begin(115200);
 
     myTag = 10;
+    floatTag = 0;
     strcpy(myTag.Name, "myTag");
     strcpy(floatTag.Name, "Float Tag");
     myTag.OnChange(HandleOnChange);
@@ -33,8 +32,8 @@ void setup() {
 }
 
 void loop() {
-    myTag = 1 + myTag;
-    floatTag = floatTag + 0.5f;
+    Serial.println(myTag != 10);
+    Serial.println(!floatTag);
 
     delay(1000);
 }
