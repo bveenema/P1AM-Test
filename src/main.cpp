@@ -1,9 +1,21 @@
 #include <Arduino.h>
 #include <Tags.h>
+#include <TagCLI.h>
 #include <avr/dtostrf.h>
 
 TagInt myTag;
 TagFloat floatTag;
+
+CLIProvider TagCLI([](char *string)
+{
+    Serial.print(string);
+});
+
+void serialEvent()
+{
+    Serial.println("Char Received");
+    TagCLI.Read(Serial.read());
+}
 
 template<typename T>
 void HandleOnChange(TagBase<T> &tag, const T current, const T previous, const Tag::Type type)
@@ -17,7 +29,7 @@ void HandleOnChange(TagBase<T> &tag, const T current, const T previous, const Ta
     
     snprintf(stringBuffer, sizeof(stringBuffer), "Update %s, New Value: %s, Old Value: %s, Type: %d, Index: %d", tag.Name, currentBuffer, previousBuffer, type, tag.GetIndex());
     
-    Serial.println(stringBuffer);
+    // Serial.println(stringBuffer);
 }
 
 void setup() {
@@ -33,7 +45,7 @@ void setup() {
 
 void loop() {
     Serial.println(myTag != 10);
-    Serial.println(!floatTag);
+    // Serial.println(!floatTag);
 
     delay(1000);
 }
