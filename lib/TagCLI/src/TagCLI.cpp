@@ -26,21 +26,20 @@ void CLIProvider::Read(char c)
         // Null terminate string
 		messageBuffer[messageIndex] = 0;
 
-        // Determine the command
-        char *token = strtok(messageBuffer, " ");
-
         //  Print out tokens
-        // while (token !=NULL)
-        // {
-        //     Print(strcat(token, "\n"));
-        //     token = strtok(NULL, " ");
-        // }
-
-        Print(strcat(token, "\n"));
+        char *token;
+        token = strtok(messageBuffer, " ");
+        
+        while (token !=NULL)
+        {
+            Print(token);
+            Print("\n");
+            token = strtok(NULL, " ");
+        }
         
 		messageIndex = 0; // reset buffer position
 
 		// Interpet the completed command
-		MessageHandler();
+		// MessageHandler();
 	}
 }

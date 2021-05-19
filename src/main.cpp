@@ -11,12 +11,6 @@ CLIProvider TagCLI([](char *string)
     Serial.print(string);
 });
 
-void serialEvent()
-{
-    Serial.println("Char Received");
-    TagCLI.Read(Serial.read());
-}
-
 template<typename T>
 void HandleOnChange(TagBase<T> &tag, const T current, const T previous, const Tag::Type type)
 {
@@ -34,6 +28,7 @@ void HandleOnChange(TagBase<T> &tag, const T current, const T previous, const Ta
 
 void setup() {
     Serial.begin(115200);
+    while(!Serial);
 
     myTag = 10;
     floatTag = 0;
@@ -44,8 +39,10 @@ void setup() {
 }
 
 void loop() {
-    Serial.println(myTag != 10);
+    // Serial.println(myTag != 10);
     // Serial.println(!floatTag);
-
-    delay(1000);
+    while(Serial.available()>0)
+    {
+        TagCLI.Read(Serial.read());
+    }
 }
