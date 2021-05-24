@@ -5,8 +5,6 @@ Tag CLI is a Tag Provider that creates a Command Line Interface (CLI) type inter
 - Monitor
   - Monitor --all[-a]
   - Monitor <tagName1>, <tagName2>, ...
-  - Monitor --alarms[-l]
-  - Monitor --message[-m]
 - Update
   - Update <tagName> --value[-v] <newValue>
   - Update <tagName> --min[-i] <newMin>
