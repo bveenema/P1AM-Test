@@ -150,10 +150,6 @@ void CLICommandMonitor::HandleCommand(char* flag, LinkedList<Tag*>& Tags)
             }
             tagName++;
         }
-        if(!MatchFound)
-        {
-            tag->RemoveOnChange(CLICommandMonitorOnChange);
-        }
     }
 
     // Report any tag names that did not match a tag
