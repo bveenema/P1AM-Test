@@ -4,7 +4,6 @@
 
 CLICommandMonitor CLICommand_Monitor;
 
-
 void CLICommandMonitorOnChange(Tag& tag, void* current, const void* previous)
 {
     char cString[21];
@@ -109,7 +108,7 @@ void CLICommandMonitor::HandleCommand(char* flag, LinkedList<Tag*>& Tags)
 
             // Compare subcommandName to SubCommands
             bool SubCommandFound = false;
-            for(int i=0; i<2; i++)
+            for(int i=0; i<sizeof(SubCommands)/sizeof(SubCommands[0]); i++)
             {
                 if( strcmp(subcommandName, SubCommands[i].Name)      == 0  ||
                     strcmp(subcommandName, SubCommands[i].ShortName) == 0    )
@@ -182,7 +181,7 @@ void CLICommandMonitor::HandleCommand(char* flag, LinkedList<Tag*>& Tags)
     }
 
     // Handle any commands
-    for(int i=0; i<2; i++)
+    for(int i=0; i<sizeof(SubCommands)/sizeof(SubCommands[0]); i++)
     {
         if(SubCommands[i].Detected)
             if(SubCommands[i].handler) SubCommands[i].handler(flag, Tags);
