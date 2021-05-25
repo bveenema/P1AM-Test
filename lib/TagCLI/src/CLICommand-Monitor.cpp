@@ -57,6 +57,19 @@ void SubcommandHandler_All(char* flag, LinkedList<Tag*>& Tags)
     }
 }
 
+void SubcommandHandler_None(char* flag, LinkedList<Tag*>& Tags)
+{
+    // Confirm Action
+    CLICommand_Monitor.Print("Monitor no tags\n");
+    
+    // Turn on monitoring for all tags
+    for(int i=0; i<Tags.size(); i++)
+    {
+        Tag *tag = Tags.get(i);
+        tag->RemoveOnChange(CLICommandMonitorOnChange);
+    }
+}
+
 char* CLICommandMonitor::GetName()
 {
     return name;
@@ -76,9 +89,10 @@ void CLICommandMonitor::HandleCommand(char* flag, LinkedList<Tag*>& Tags)
         bool Detected;
     };
 
-    subcommand SubCommands[1] = 
+    subcommand SubCommands[2] = 
     {
-        {"all", "a", SubcommandHandler_All}
+        {"all", "a", SubcommandHandler_All},
+        {"none", "n", SubcommandHandler_None},
     };
 
     // Cycle through the flags
@@ -95,7 +109,7 @@ void CLICommandMonitor::HandleCommand(char* flag, LinkedList<Tag*>& Tags)
 
             // Compare subcommandName to SubCommands
             bool SubCommandFound = false;
-            for(int i=0; i<1; i++)
+            for(int i=0; i<2; i++)
             {
                 if( strcmp(subcommandName, SubCommands[i].Name)      == 0  ||
                     strcmp(subcommandName, SubCommands[i].ShortName) == 0    )
@@ -168,7 +182,7 @@ void CLICommandMonitor::HandleCommand(char* flag, LinkedList<Tag*>& Tags)
     }
 
     // Handle any commands
-    for(int i=0; i<1; i++)
+    for(int i=0; i<2; i++)
     {
         if(SubCommands[i].Detected)
             if(SubCommands[i].handler) SubCommands[i].handler(flag, Tags);
